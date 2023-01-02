@@ -18,3 +18,17 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+
+.a {
+  display: flex;
+  margin-bottom: 15px;
+}
+.b {
+  margin-right: 20px;
+}
+.c {
+  display: flex;
+}
+.d {
+  margin-right: 20px;
+}
