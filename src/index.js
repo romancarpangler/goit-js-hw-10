@@ -18,20 +18,35 @@ input.addEventListener('input', debounce(onInputChange, DEBOUNCE_DELAY));
 function onInputChange() {
   const inputValue = input.value.trim();
 
+  clear();
+
   if (inputValue) {
     fetchCountries(inputValue)
-      .then(data => createMarkup(data))
+      .then(data => checkFunctions(data))
       .catch(error => console.log(error));
-  }
-  if (!inputValue) {
-    clear();
   }
 }
 
-function createMarkup(obj) {
-  checkFunctions(obj);
-  // console.log(obj);
-  // console.log({ obj: { languages: { name } } });
+function checkFunctions(obj) {
+  if (obj.length > 1 && obj.length <= 10) {
+    clear();
+
+    return createMarkupList(obj);
+  }
+
+  if (obj.length === 1) {
+    clear();
+
+    return createMarkupCard(obj);
+  }
+
+  if (obj.length > 10) {
+    clear();
+
+    Notiflix.Notify.info(
+      'Too many matches found. Please enter a more specific name.'
+    );
+  }
 }
 
 function createMarkupList(obj) {
@@ -63,29 +78,7 @@ function createMarkupCard(obj) {
   refs.box.insertAdjacentHTML('beforeend', markup);
 }
 
-function checkFunctions(obj) {
-  if (obj.length > 1 && obj.length <= 10) {
-    clear();
-
-    return createMarkupList(obj);
-  }
-
-  if (obj.length === 1) {
-    clear();
-
-    return createMarkupCard(obj);
-  }
-
-  if (obj.length > 10) {
-    clear();
-
-    Notiflix.Notify.info(
-      'Too many matches found. Please enter a more specific name.'
-    );
-  }
-}
-
 function clear() {
   refs.list.innerHTML = '';
-  refs.box.innerWidth = '';
+  refs.box.innerHTML = '';
 }
